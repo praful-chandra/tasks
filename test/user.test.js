@@ -1,6 +1,8 @@
 const request = require("supertest");
 const app = require("../src/app");
 const mongoose = require("mongoose");
+const path = require("path");
+const fs = require("fs");
 
 const User = mongoose.model("user");
 
@@ -8,7 +10,7 @@ beforeAll(() => User.deleteMany());
 
 afterAll(() => mongoose.disconnect());
 
-
+  
 const user =  {
     _id : new mongoose.Types.ObjectId(),
   name: "Praful",
@@ -119,3 +121,36 @@ describe("User authentication ", () => {
 
 
 });
+
+
+describe("user Profile Routes",()=>{
+  test("adding profile pictire",async()=>{
+
+    const avatar = path.join(__dirname,"../lol.png");
+
+
+    const req = await request(app)
+                 .post("/user/addProfilePicture")
+                .set("Authorization",`Bearer ${userToken}`)
+                .set('content-type', 'application/form-data')
+                .attach("avatar",avatar)
+
+                expect(req.statusCode).toEqual(201);
+  })
+
+  test("get user profile picture",async()=>{
+    const req = await request(app)
+                .get(`/user/${user._id}/avatar`);
+
+              expect(req.statusCode).toEqual(200)
+  })
+                
+
+  test("should not get profile picture for nonexisting user",async()=>{
+    const req = await request(app)
+                .get("/user/092103/avatar");
+                expect(req.statusCode).toEqual(404)
+
+  })
+      
+})

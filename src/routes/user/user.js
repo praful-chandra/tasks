@@ -41,7 +41,7 @@ router.post(
     req.user
       .save()
       .then((user) => {
-        res.json({ user });
+        res.status(201).json({ user });
       })
       .catch((e) => {
         throw Error(e);
