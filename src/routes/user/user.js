@@ -59,7 +59,6 @@ router.post(
 router.get("/:id/avatar", async (req, res) => {
   try {
     const user = await User.findById(req.params.id, { avatar: 1 });
-    console.log(user);
 
     if (!user) {
       throw new Error("User Avatar not found");

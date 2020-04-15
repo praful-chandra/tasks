@@ -15,7 +15,7 @@ mongoose.connect(
         return console.log("can't connect to MongoDB");
         
       }
-      console.log("MongoDB connected!");
+  process.env.ENVIR !== "test" ?  console.log("MongoDB connected!") : null;
       
   }
 );

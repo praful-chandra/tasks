@@ -47,13 +47,15 @@ router.post("/signup", async (req, res) => {
     email: req.body.email,
     password: req.body.password,
   });
-
+  if(reqKeys.includes("_id")){
+    newUser._id = req.body._id;
+  }
   newUser
     .save()
     .then( async (usr) => {
         const token =  await newUser.genToken();
 
-      res.json({
+      res.status(201).json({
           user : usr,
           token 
       });
@@ -90,7 +92,7 @@ router.post("/login", (req, res) => {
     })
     })
     .catch((err) => {
-      res.json({error : err.message});
+      res.status(401).json({error : err.message});
     });
 });
 
@@ -99,7 +101,7 @@ router.post("/login", (req, res) => {
 //DEF : returns user information if token is valid
 router.post("/validateUser",authMiddleWare,(req,res)=>{
     
-    res.json(req.user)
+    res.json({user :req.user})
 })
 
 //PATH : /auth/user/logout
