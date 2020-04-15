@@ -1,8 +1,7 @@
 const request = require("supertest");
-const app = require("../src/app");
+const app = require("../../src/app");
 const mongoose = require("mongoose");
 const path = require("path");
-const fs = require("fs");
 
 const User = mongoose.model("user");
 
@@ -15,7 +14,7 @@ const user =  {
     _id : new mongoose.Types.ObjectId(),
   name: "Praful",
   email: "user1@task.com",
-  password: "task#123",
+  password: "task#123",  
 };
 
 let userToken = "";
@@ -126,7 +125,7 @@ describe("User authentication ", () => {
 describe("user Profile Routes",()=>{
   test("adding profile pictire",async()=>{
 
-    const avatar = path.join(__dirname,"../lol.png");
+    const avatar = path.join(__dirname,"../../lol.png");
 
 
     const req = await request(app)
@@ -154,3 +153,4 @@ describe("user Profile Routes",()=>{
   })
       
 })
+

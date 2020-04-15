@@ -44,7 +44,7 @@ router.post("/add", authMiddleWare, (req, res) => {
   newTask
     .save()
     .then((data) => {
-      res.json(data);
+      res.status(201).json({task : data});
     })
     .catch((e) => {
       res.status(500).json({ error: "coud not create new task" });
@@ -93,7 +93,7 @@ router.get("/mytasks", authMiddleWare, async (req, res) => {
     filter,
     sort
   );
-  res.json(tasks);
+  res.json({tasks});
 });
 
 router.delete("/deleteTask", authMiddleWare, async (req, res) => {
@@ -149,9 +149,9 @@ router.patch("/togglecomplete", authMiddleWare, async (req, res) => {
 //ACCESS : private
 //DEF : edit the title of the task
 router.patch("/edit", authMiddleWare, async (req, res) => {
-  if (!req.body.title) {
+  if (!req.body.title || !req.body.id) {
     res.status(400).json({
-      error: "must provide a new title",
+      error: "must provide a new title with id",
     });
     return;
   }
